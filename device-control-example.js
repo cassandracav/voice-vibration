@@ -38,6 +38,7 @@ async function runDeviceControlExample() {
 
 // i is the time in seconds
 // j is the intensity in percentage with no percent sign
+var timeout;
 async function rewardVibration(i, j){
   // In Javascript, allowedMessages is a map, so we'll need to iterate its
     // properties.
@@ -65,8 +66,15 @@ async function rewardVibration(i, j){
         console.log("got a device error!");
       }
     }
-    await new Promise(r => setTimeout(r, i*1000));
-    await device.stop();
+    // Clear the old timeout if a new command happens before
+    if (timeout) { clearTimeout(timeout); }
+    // Start a new timer so if we don't send a new command within the timer it will stop. 
+    await new Promise(function (r) {
+      timeout = setTimeout(function () {
+        device.stop();
+        r();
+      }, i*1000);
+    });
 
     // If we wanted to just set one motor on and the other off, we could
     // try this version that uses an array. It'll throw an exception if

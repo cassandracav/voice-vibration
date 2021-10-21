@@ -63,7 +63,6 @@ async function parse(phrase){
 
     var foundIndex = null;
     rewardArray.forEach((row, index) => {
-        console.log(row);
         if(row[0].trim() == phrase.trim()){
             foundIndex = index;
         }
