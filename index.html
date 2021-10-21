@@ -42,17 +42,17 @@
     </div>
     <div class="mt-4" id="div_language">
         <h2 class="mb-3 text-light">Connect Device</h2>
-        <button class="btn btn-info" id="connect-button">Connect</button>
+        <button class="btn btn-info" id="connect-button">Connect</button>&nbsp;<span id='connect-wait' class='text-light'></span>
       </div>
     <h2 class="mt-4 text-light">Transcript</h2>
-    <div class="p-3" style="border: 1px solid gray; height: 300px; border-radius: 8px;">
+    <div class="p-3" style="border: 1px solid gray; height: 150px; border-radius: 8px;">
       <span id="final" class="text-light"></span>
       <span id="interim" class="text-secondary"></span>
     </div>
     <div class="mt-4">
-      <button class="btn btn-success" id="start">Start</button>
+      <button class="btn btn-success" id="start" disabled="true">Start</button>
       <button class="btn btn-danger" id="stop">Stop</button>
-      <p id="status" class="lead mt-3 text-light" style="display: none">Listenting ...</p>
+      &nbsp;<span id='status' style="display:none;" class='text-light'>Listening...</span>
     </div>
   </body>
   <script src="./speech-recognition.js"></script>
@@ -77,11 +77,18 @@
         var reader = new FileReader();
         reader.onload = function () {
             rewardArray = CSVToArray(reader.result);
+            voiceVibrationReady();
         };
         // start reading the file. When it is done, calls the onload event defined above.
         reader.readAsBinaryString(fileInput.files[0]);
     };
 
     fileInput.addEventListener('change', readFile);
+
+    async function voiceVibrationReady(){
+      if(((typeof rewardArray != undefined) && (client != null) && (typeof client.Devices != undefined) && (typeof client.Devices[0] != undefined))){
+        document.getElementById('start').disabled = false;
+      }    
+    }
   </script>
 </html>

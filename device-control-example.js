@@ -11,6 +11,8 @@ var connector = null;
 var client = null;
 
 async function runDeviceControlExample() {
+  //Show wait
+  document.getElementById('connect-wait').innerText = "Please wait for connection to finish...";
   // Instantiate our wasm module. This only needs to be done once. If you did it
   // elsewhere, ignore this.
   await Buttplug.buttplugInit();
@@ -28,6 +30,10 @@ async function runDeviceControlExample() {
     console.log("Client currently knows about these devices:");
     client.Devices.forEach((device) => console.log(`- ${device.Name}`));
     // Device is connected and set up, yay
+
+    //Show connection
+    document.getElementById('connect-wait').innerText = "Connected to "+device.Name;
+    voiceVibrationReady();
   });
   client
     .addListener("deviceremoved", (device) => console.log(`Device Removed: ${device.Name}`));

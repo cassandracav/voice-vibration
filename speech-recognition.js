@@ -13,7 +13,7 @@ if ("webkitSpeechRecognition" in window) {
   // Callback Function for the onStart Event
   speechRecognition.onstart = () => {
     // Show the Status Element
-    document.querySelector("#status").style.display = "block";
+    document.querySelector("#status").style.display = "inline";
   };
   speechRecognition.onerror = () => {
     // Hide the Status Element
@@ -42,7 +42,6 @@ if ("webkitSpeechRecognition" in window) {
     // Check if the phrase is in the table, if so, execute
     parse(final_transcript);
     final_transcript = "";
-    console.log(final_transcript);
   };
 
   // Set the onClick property of the start button
