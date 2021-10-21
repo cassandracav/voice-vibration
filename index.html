@@ -1,0 +1,87 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <link
+      href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.0-beta1/dist/css/bootstrap.min.css"
+      rel="stylesheet"
+      integrity="sha384-giJF6kkoqNQ00vy+HMDP7azOuL0xtbfIcaT9wjKHr8RbDVddVHyTfAAsrekwKmP1"
+      crossorigin="anonymous"
+    />
+    <title>Speech To Text</title>
+    <script 
+        lang="javascript"
+        src="https://cdn.jsdelivr.net/npm/buttplug@1.0.16/dist/web/buttplug.min.js"
+    />
+    <script lang="javascript">
+        // After we've loaded the module above, we'll have a "Buttplug" global we can access 
+        // methods and classes from. We'll use that to initialize the library. This is 
+        // required because of the way we have to load our WASM code into the application. 
+        // You'll need to call buttplugInit(), which returns a promise that will resolve 
+        // when WASM is loaded, at which point you can go ahead and run other Buttplug 
+        // commands.
+        //
+        // We have this call in all of our examples in this guide, to remind users that
+        // this must happen when running the library. If you do not call this, you'll
+        // get errors in your developer console (and exceptions thrown) that will
+        // remind you that you need to do it.
+        Buttplug.buttplugInit().then(() => console.log("Buttplug Loaded"));
+    </script>
+  </head>
+  <body class="container pt-5 bg-dark">
+    <div class="mt-4" id="div_language">
+      <h2 class="mb-3 text-light">Select Language</h2>
+      <select class="form-select bg-secondary text-light" id="select_language" onchange="updateCountry()"></select>
+      <select class="form-select bg-secondary text-light mt-2" id="select_dialect"></select>
+    </div>
+    <div class="mt-4" id="div_csv">
+        <h2 class="mb-3 text-light">Select Reward CSV</h2>
+        <input class="form-control-file bg-secondary text-light" id="csv" type="file" />
+        <span id="out" class="text-light"></span>
+    </div>
+    <div class="mt-4" id="div_language">
+        <h2 class="mb-3 text-light">Connect Device</h2>
+        <button class="btn btn-info" id="connect-button" />
+      </div>
+    <h2 class="mt-4 text-light">Transcript</h2>
+    <div class="p-3" style="border: 1px solid gray; height: 300px; border-radius: 8px;">
+      <span id="final" class="text-light"></span>
+      <span id="interim" class="text-secondary"></span>
+    </div>
+    <div class="mt-4">
+      <button class="btn btn-success" id="start">Start</button>
+      <button class="btn btn-danger" id="stop">Stop</button>
+      <p id="status" class="lead mt-3 text-light" style="display: none">Listenting ...</p>
+    </div>
+  </body>
+  <script src="./speech-recognition.js"></script>
+  <script src="./language.js"></script>
+  <script src="./device-control-example.js"></script>
+  <script lang="javascript" defer>
+    document
+        .getElementById("connect-button")
+        .addEventListener("click", async () => await runDeviceControlExample());
+
+    // CSV Parser
+    const CSVToArray = (data, delimiter = ',', omitFirstRow = false) =>
+        data
+            .slice(omitFirstRow ? data.indexOf('\n') + 1 : 0)
+            .split('\n')
+            .map(v => v.split(delimiter));
+
+    // CSV loader
+    var rewardArray;
+    var fileInput = document.getElementById("csv"),
+    readFile = function () {
+        var reader = new FileReader();
+        reader.onload = function () {
+            rewardArray = CSVToArray(reader.result);
+        };
+        // start reading the file. When it is done, calls the onload event defined above.
+        reader.readAsBinaryString(fileInput.files[0]);
+    };
+
+    fileInput.addEventListener('change', readFile);
+  </script>
+</html>
