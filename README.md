@@ -17,3 +17,8 @@ I liked what XToys was doing, but wanted more control over where the data went a
 * Microphone
 * Buttplug.io supported vibrator, plug, or other toy with vibration.
 * A browser that supports Web BLE, Web Speech, and microphone access. (Read: Chrome, its just Chrome. It probably works in WebBLE on iOS too, but I haven't tested it.
+
+## Credits
+* Web Speech code lifted from: https://www.section.io/engineering-education/speech-recognition-in-javascript/
+* Buttplug.io example code lifted from: https://github.com/buttplugio/buttplug-developer-guide
+* CSVtoArray code lifted from a random StackOverflow post because I was too lazy to write my own.
